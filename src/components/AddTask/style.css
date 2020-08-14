@@ -1,0 +1,23 @@
+.Add-Task {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px;
+    width: 100%;
+    height: 5vh;
+}
+
+.Add-Task input {
+    width: 50%;
+    height: 80%;
+    margin: 10px;
+    font-size:100%;
+}
+
+.Add-Task button {
+    height: 100%;
+    background: #018686;
+    border: none;
+    box-shadow: 0 5px 5px 0 rgba(25,25, 25, 0.8);
+    color: white; 
+}

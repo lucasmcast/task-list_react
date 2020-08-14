@@ -20,3 +20,75 @@
     background-color: #018686;
     color: white;
 }
+
+.obj-ação {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-Apagar {
+    display: inline-block;
+    background: #b00020;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 5px 5px 0 rgba(25,25, 25, 0.8);
+    padding: 10px;
+    color: white;
+    margin: auto;
+    width: 80px;
+}
+
+.btn-Concluir {
+    display: inline-block;
+    background: #03dac6;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 5px 5px 0 rgba(25,25, 25, 0.8);
+    padding: 10px;
+    color: white;
+    margin: auto;
+    width: 80px;
+    cursor: pointer;
+}
+
+.btn-Editar {
+    display: inline-block;
+    background: #3700b3;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 5px 5px 0 rgba(25,25, 25, 0.8);
+    padding: 10px;
+    color: white;
+    margin: auto;
+    width: 80px;
+}
+
+@media (max-width: 600px){
+    .obj-ação{
+        display: block;
+    }
+
+    .btn-Apagar {
+        width: 70px;
+    }
+    .btn-Concluir {
+        width: 70px;
+    }
+
+    .btn-Editar {
+        width: 70px;
+    }
+    
+    #customers td, #customers th {
+        border: 1px solid #ddd;
+        padding: 5px;
+        font-size: 15px;
+    }
+}
+
+
+.btn-Concluir:active {
+    width: 75px;
+    height: 30px;
+}

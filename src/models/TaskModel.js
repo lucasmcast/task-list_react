@@ -1,8 +1,13 @@
+/**
+ * Class model of task creates
+ * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
+ * @since 1.0.0
+ */
 class TaskModel{
     constructor(){
-        this.id
-        this.descricao,
-        this.situacao,
+        this.id = null;
+        this.descricao = '';
+        this.situacao = '';
         this.botoes = []
     }
 
@@ -23,11 +28,21 @@ class TaskModel{
     }
 
     getId(){
-        return this.id
+        return this.id;
     }
 
-    /**
-     * TODO: Terminar de construir a classe modelo
-     */
+    getDescricao(){
+        return this.descricao;
+    }
+
+    getSituacao(){
+        return this.situacao;
+    }
+
+    getBotoes(){
+        return this.botoes
+    }
     
 }
+
+export default TaskModel;
