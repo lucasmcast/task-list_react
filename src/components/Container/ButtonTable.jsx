@@ -15,7 +15,7 @@ class ButtonTable extends Component {
                 className={`btn-${this.state.name}`}
                 onClick={this.state.onClick}
             >
-                {this.state.name}
+            {this.state.name}
             </button>
         )
     }

@@ -2,14 +2,18 @@ import React, { Component } from 'react';
 import InputAddTask from './InputAddTask';
 import ButtonAddTask from './ButtonAddTask';
 import './style.css'
+import TaskModel from '../../models/TaskModel';
 
+/**
+ * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
+ * @since 1.0.0
+ */
 class AddTask extends Component{
 
     constructor(props){
         super(props)
-        this.task = ''
         this.state = {
-            clean: false,
+            task: '',
             addTask: this.props.addTask
         }
     }
@@ -19,17 +23,47 @@ class AddTask extends Component{
      * @param {Event} event 
      */
     handleChangeTask(event){
-        this.task = event.target.value
+        const valueInput = event.target.value;
+        this.setState({task: valueInput})
     }
 
     /**
-     * call funcion creates in View
+     * calls the add task function if the add button is clicked
      * @see models.TaskList.addTask
      */
-    addClickButton(event){
-        this.state.addTask(this.task)
-        this.setState({clean: true})
-        this.render();
+    handleClickButtonAddTask(event){
+        if (this.state.task !== ''){
+            let taskModel = new TaskModel();
+            taskModel.setDescricao(this.state.task);
+            taskModel.setSituacao("Pendente");
+            this.state.addTask(taskModel);
+            const valueInput = '';
+            this.setState({task: valueInput});
+        }else{
+            alert("Digite uma tarefa")
+        }
+        
+    }
+
+    /**
+     * calls the add task function if key Enter pressed
+     * @param {Event} event - Event 
+     * @see models.TaskListView.addTask()
+     */
+    handleOnKeyUpAddTask(event){
+        if(event.key === 'Enter'){
+            if(this.state.task !== ''){
+                let taskModel = new TaskModel();
+                taskModel.setDescricao(this.state.task);
+                taskModel.setSituacao("Pendente");
+                this.state.addTask(taskModel);
+                const valueInput = '';
+                this.setState({task: valueInput});
+            }else{
+                alert("Digite uma tarefa")
+            }
+            
+        }
     }
 
     render(){
@@ -37,9 +71,11 @@ class AddTask extends Component{
             <div className="Add-Task">
                 <InputAddTask
                     onChange={this.handleChangeTask.bind(this)}
+                    onKeyUp={this.handleOnKeyUpAddTask.bind(this)}
                     clean={this.state.clean}
+                    value={this.state.task}
                 ></InputAddTask>
-                <ButtonAddTask onClick={this.addClickButton.bind(this)}></ButtonAddTask>
+                <ButtonAddTask onClick={this.handleClickButtonAddTask.bind(this)}></ButtonAddTask>
             </div>
         )
         

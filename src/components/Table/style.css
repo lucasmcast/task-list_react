@@ -29,19 +29,7 @@
 
 .btn-Apagar {
     display: inline-block;
-    background: #b00020;
-    border: none;
-    border-radius: 2px;
-    box-shadow: 0 5px 5px 0 rgba(25,25, 25, 0.8);
-    padding: 10px;
-    color: white;
-    margin: auto;
-    width: 80px;
-}
-
-.btn-Concluir {
-    display: inline-block;
-    background: #03dac6;
+    background: #B71C1C;
     border: none;
     border-radius: 2px;
     box-shadow: 0 5px 5px 0 rgba(25,25, 25, 0.8);
@@ -50,11 +38,13 @@
     margin: auto;
     width: 80px;
     cursor: pointer;
+    outline: none;
 }
 
-.btn-Editar {
+
+.btn-Concluir {
     display: inline-block;
-    background: #3700b3;
+    background: #00695C;
     border: none;
     border-radius: 2px;
     box-shadow: 0 5px 5px 0 rgba(25,25, 25, 0.8);
@@ -62,6 +52,22 @@
     color: white;
     margin: auto;
     width: 80px;
+    cursor: pointer;
+    outline: none;
+}
+
+.btn-Editar {
+    display: inline-block;
+    background: #01579B;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 0 5px 5px 0 rgba(25,25, 25, 0.8);
+    padding: 10px;
+    color: white;
+    margin: auto;
+    width: 80px;
+    cursor: pointer;
+    outline: none;
 }
 
 @media (max-width: 600px){
@@ -92,3 +98,28 @@
     width: 75px;
     height: 30px;
 }
+
+.btn-Editar:active {
+    width: 75px;
+    height: 30px;
+}
+
+.btn-Apagar:active {
+    width: 75px;
+    height: 30px;
+}
+
+.btn-Apagar:hover {
+    background: #D32F2F;
+}
+.btn-Editar:hover {
+    background: #0288D1;
+}
+
+.btn-Concluir:hover{
+    background: #00897B;
+}
+
+
+
+

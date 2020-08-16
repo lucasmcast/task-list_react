@@ -23,7 +23,7 @@ class RowTable extends Component {
                             )
                         }else{
                             return(
-                                <td key={index}>
+                                <td key={index} className={`obj-${col.toLowerCase()}`}>
                                     {this.state.row[index]}
                                 </td>
                             )

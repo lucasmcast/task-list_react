@@ -11,10 +11,11 @@ class Index{
 
   route(pathname){
     switch(pathname){
-      case "/":
+      
+      case "/home":
         new TaskListView(this.routes);
         break;
-      case "/home":
+      default:
         new TaskListView(this.routes);
         break;
     }

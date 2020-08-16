@@ -5,17 +5,18 @@ class InputAddTask extends Component{
     constructor(props){
         super(props)
         this.state = {
-            clean : this.props.clean,
-            onChange: this.props.onChange
+            onChange: this.props.onChange,
+            onKeyUp: this.props.onKeyUp
         }
     }
 
     render(){
-        console.log(this.state.clean)
         return(
             <input 
                 placeholder="Qual será sua tarefa? "
                 onChange={this.state.onChange}
+                value={this.props.value}
+                onKeyUp={this.state.onKeyUp}
             >
             </input>
         )

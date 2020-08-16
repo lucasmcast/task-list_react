@@ -6,10 +6,6 @@ import Clock from './Clock';
 
 class NavBar extends Component{
     
-    constructor(props){
-        super(props)
-    }
-
     /**
      * TODO: Implementar a ação do botão buscar e criar componentes separados para a navbar
      */
@@ -18,7 +14,7 @@ class NavBar extends Component{
             <header>
                 <nav>
                     <div className="navBar-caixa">
-                        <h1><img src={Logo}></img></h1>
+                        <h1><img alt="" src={Logo}></img></h1>
                         <ul className="nav-items">
                             {this.props.menuItems.map((item, index) => {
                                 return(

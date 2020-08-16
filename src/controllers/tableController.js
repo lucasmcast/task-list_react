@@ -27,15 +27,17 @@ export default class TableController{
         this.taskDao.delete(id);
     }
 
+    edit(task){
+        this.taskDao.edit(task);
+    }
+
     /**
      * 
-     * @param {TaskModel} task 
-     * @param {DOMElement} buttons 
-     * @param {TableModel} table 
-     * @param {function callback} callback 
+     * @param {TaskModel} task
      */
     save(task){
-       this.taskDao.save(task);
+       let response = this.taskDao.save(task);
+       return response
     }
 
 }

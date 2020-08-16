@@ -5,48 +5,46 @@ import Main from '../components/Main/Main';
 import TaskModel from '../models/TaskModel';
 import TableController from '../controllers/tableController';
 
+/**
+ * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
+ * @since 1.0.0
+ */
 class TaskListView {
 
     constructor(routes) {
         this.routes = routes;
+        this.controller = new TableController()
         this.render();
     }
 
-    addTask(description){
-        let taskModel = new TaskModel()
-
-        taskModel.setDescricao(description)
-        taskModel.setSituacao("Pendente")
-
-        let controller = new TableController()
-
-        controller.save(taskModel)
+    async addTask(taskModel){
+        let response = await this.controller.save(taskModel)
+        return response;
     }
 
     clickDelete(task){
-        let controller = new TableController()
         this.controller.delete(task.getId())
-        console.log("APAGOU", task);
     }
 
     clickFinish(task){
-        let controller = new TableController()
+        this.controller.edit(task);
         console.log("CONCLUIU", task)
     }
 
     clickEdit(task){
-        let controller = new TableController()
+        this.controller.edit(task);
         console.log("EDITOU", task)
     }
+    
     render() {
         let controller = new TableController()
         let tasksDB = controller.getAll();
         let tasks = []
         let routes = this.routes;
-        let addTask = this.addTask
-        let clickDelete = this.clickDelete
-        let clickFinish = this.clickFinish
-        let clickEdit = this.clickEdit
+        let addTask = this.addTask.bind(this)
+        let clickDelete = this.clickDelete.bind(this)
+        let clickFinish = this.clickFinish.bind(this)
+        let clickEdit = this.clickEdit.bind(this)
 
         tasksDB.then(function (data){
             for(let i = 0; i < data.length; i++){
