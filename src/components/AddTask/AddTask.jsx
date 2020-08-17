@@ -3,6 +3,8 @@ import InputAddTask from './InputAddTask';
 import ButtonAddTask from './ButtonAddTask';
 import './style.css'
 import TaskModel from '../../models/TaskModel';
+import { addTask } from '../../redux/actions'
+import { connect } from 'react-redux'
 
 /**
  * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
@@ -13,8 +15,7 @@ class AddTask extends Component{
     constructor(props){
         super(props)
         this.state = {
-            task: '',
-            addTask: this.props.addTask
+            task: ''
         }
     }
 
@@ -32,7 +33,9 @@ class AddTask extends Component{
      * @see models.TaskList.addTask
      */
     handleClickButtonAddTask(event){
-        if (this.state.task !== ''){
+        this.props.addTask(this.state.task);
+        this.setState({task: ''})
+        /* if (this.state.task !== ''){
             let taskModel = new TaskModel();
             taskModel.setDescricao(this.state.task);
             taskModel.setSituacao("Pendente");
@@ -41,7 +44,7 @@ class AddTask extends Component{
             this.setState({task: valueInput});
         }else{
             alert("Digite uma tarefa")
-        }
+        } */
         
     }
 
@@ -72,7 +75,6 @@ class AddTask extends Component{
                 <InputAddTask
                     onChange={this.handleChangeTask.bind(this)}
                     onKeyUp={this.handleOnKeyUpAddTask.bind(this)}
-                    clean={this.state.clean}
                     value={this.state.task}
                 ></InputAddTask>
                 <ButtonAddTask onClick={this.handleClickButtonAddTask.bind(this)}></ButtonAddTask>
@@ -82,4 +84,7 @@ class AddTask extends Component{
     }
 }
 
-export default AddTask;
+export default connect(
+    null,
+    {addTask}
+)(AddTask);

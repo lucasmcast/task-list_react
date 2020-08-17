@@ -4,6 +4,8 @@ import NavBar from '../components/NavBar';
 import Main from '../components/Main/Main';
 import TaskModel from '../models/TaskModel';
 import TableController from '../controllers/tableController';
+import store from '../redux/store'
+import { Provider } from 'react-redux'
 
 /**
  * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
@@ -56,7 +58,7 @@ class TaskListView {
             }
 
             ReactDOM.render(
-                <React.StrictMode>
+                <Provider store={store}>
                     <NavBar menuItems={routes} />
                     <Main 
                         data={tasks}
@@ -65,7 +67,7 @@ class TaskListView {
                         clickFinish={clickFinish}
                         clickEdit= {clickEdit}
                     />
-                </React.StrictMode>,
+                </Provider>,
                 document.getElementById('root')
             );
         })
