@@ -35,8 +35,8 @@ export default class TableController{
      * 
      * @param {TaskModel} task
      */
-    save(task){
-       let response = this.taskDao.save(task);
+    async save(task){
+       let response = await this.taskDao.save(task);
        return response
     }
 

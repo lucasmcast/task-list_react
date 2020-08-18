@@ -10,12 +10,13 @@ import { connect } from 'react-redux'
  * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
  * @since 1.0.0
  */
+
 class AddTask extends Component{
 
     constructor(props){
         super(props)
         this.state = {
-            task: ''
+            description: ''
         }
     }
 
@@ -25,7 +26,7 @@ class AddTask extends Component{
      */
     handleChangeTask(event){
         const valueInput = event.target.value;
-        this.setState({task: valueInput})
+        this.setState({description: valueInput})
     }
 
     /**
@@ -33,8 +34,8 @@ class AddTask extends Component{
      * @see models.TaskList.addTask
      */
     handleClickButtonAddTask(event){
-        this.props.addTask(this.state.task);
-        this.setState({task: ''})
+        this.props.addTask(this.state.description);
+        this.setState({description: ''})
         /* if (this.state.task !== ''){
             let taskModel = new TaskModel();
             taskModel.setDescricao(this.state.task);
@@ -55,9 +56,9 @@ class AddTask extends Component{
      */
     handleOnKeyUpAddTask(event){
         if(event.key === 'Enter'){
-            if(this.state.task !== ''){
+            if(this.state.description !== ''){
                 let taskModel = new TaskModel();
-                taskModel.setDescricao(this.state.task);
+                taskModel.setDescricao(this.state.description);
                 taskModel.setSituacao("Pendente");
                 this.state.addTask(taskModel);
                 const valueInput = '';
@@ -75,7 +76,7 @@ class AddTask extends Component{
                 <InputAddTask
                     onChange={this.handleChangeTask.bind(this)}
                     onKeyUp={this.handleOnKeyUpAddTask.bind(this)}
-                    value={this.state.task}
+                    value={this.state.description}
                 ></InputAddTask>
                 <ButtonAddTask onClick={this.handleClickButtonAddTask.bind(this)}></ButtonAddTask>
             </div>

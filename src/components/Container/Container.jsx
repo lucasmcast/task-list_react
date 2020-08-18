@@ -4,6 +4,9 @@ import Table from '../Table';
 import ButtonTable from './ButtonTable';
 import AddTask from '../AddTask';
 import EditDesc from './EditDesc';
+import { connect } from 'react-redux';
+import { dataTable } from '../../redux/actions';
+import { getAllTasks } from '../../redux/selectors'
 
 /**
  * 
@@ -16,7 +19,7 @@ class Container extends Component{
     constructor(props){
         super(props)
         this.state = {
-            data: this.createMultipleRowsTable(),
+            tasks: this.createMultipleRowsTable(),
             addTask: this.props.addTask,
             clickDelete: this.props.clickDelete,
             clickFinish: this.props.clickFinish,
@@ -34,8 +37,8 @@ class Container extends Component{
         let idTask = taskModel.getId()
         this.state.clickDelete(taskModel);
         let index = this.findIndexArray(idTask)
-        this.state.data.splice(index,1)
-        this.setState({data: this.state.data});
+        this.state.tasks.splice(index,1)
+        this.setState({data: this.state.tasks});
     }
 
     /**
@@ -45,7 +48,7 @@ class Container extends Component{
      * TODO - Corrigir busca do banco de dados para tarefa concluida;
      */
     handleClickButtonConcluir(taskModel){
-        let arrayData = this.state.data
+        let arrayData = this.state.tasks
         taskModel.setSituacao("Concluído")
         this.state.clickFinish(taskModel);
         
@@ -73,7 +76,7 @@ class Container extends Component{
      */
     handleClickButtonEditar(taskModel){
         //this.state.clickEdit(task);
-        let arrayData = this.state.data
+        let arrayData = this.state.tasks
         let idTask = taskModel.getId()
         let index = this.findIndexArray(idTask);
 
@@ -106,8 +109,8 @@ class Container extends Component{
     
         const ID_TASK_OF_TABLE = 0;
 
-        for(let i = 0; i < this.state.data.length; i++){
-            let idTable = this.state.data[i].row[ID_TASK_OF_TABLE]
+        for(let i = 0; i < this.state.tasks.length; i++){
+            let idTable = this.state.tasks[i].row[ID_TASK_OF_TABLE]
             if(idTask === idTable){
                 index = i
             }
@@ -178,7 +181,7 @@ class Container extends Component{
         let response = await this.state.addTask(taskModel);
         taskModel.setId(response);
         const row = this.createRowTable(taskModel);
-        const newData = [...this.state.data, row]
+        const newData = [...this.state.tasks, row]
         let newState = {data: newData}
         this.setState(newState);
     }
@@ -192,7 +195,7 @@ class Container extends Component{
      * @param {Integer} index - index of array table 
      */
     handleSaveEditDescription(taskModel, index){
-        let arrayData = this.state.data
+        let arrayData = this.state.tasks
         let row = this.createRowTable(taskModel);
         arrayData[index] = row
         this.setState({data: arrayData})
@@ -200,6 +203,7 @@ class Container extends Component{
     }
    
     render(){
+        dataTable(this.props.data)
         return(
             <div className="container">
                 <AddTask
@@ -209,7 +213,7 @@ class Container extends Component{
                <Table
                     key={Math.random()} 
                     cells={this.cells}
-                    data={this.state.data}
+                    data={this.state.tasks}
                 >
                </Table>
             </div>
@@ -217,4 +221,4 @@ class Container extends Component{
     }
 }
 
-export default Container;
+export default connect(state => ({tasks: getAllTasks(state)}))(Container)
