@@ -29,14 +29,13 @@ const createMultipleRowsTable = (tasks) =>{
 }
 
 function createRowTable(taskModel){
-    console.log(taskModel)
-    taskModel.task.setBotoes(createButtonsActions(taskModel))
+    taskModel.setBotoes(createButtonsActions(taskModel))
     const row = {
         row: [
-            taskModel.task.getId(),
-            taskModel.task.getDescricao(),
-            taskModel.task.getSituacao(),
-            taskModel.task.getBotoes()
+            taskModel.getId(),
+            taskModel.getDescricao(),
+            taskModel.getSituacao(),
+            taskModel.getBotoes()
         ]
     };
     return row;
@@ -45,9 +44,9 @@ function createRowTable(taskModel){
 
 function createButtonsActions(taskModel){
     let buttons = [
-        <ButtonTable key={taskModel.task.getId} /* onClick={this.handleClickButtonApagar.bind(this, taskModel)} */ nameButton={"Apagar"}/>,
-        <ButtonTable key={taskModel.task.getId + 1} /* onClick={this.handleClickButtonConcluir.bind(this, taskModel)} */ nameButton={"Concluir"}/>,
-        <ButtonTable key={taskModel.task.getId + 2} /* onClick={this.handleClickButtonEditar.bind(this, taskModel)} */ nameButton={"Editar"}/>
+        <ButtonTable key={taskModel.getId()} /* onClick={this.handleClickButtonApagar.bind(this, taskModel)} */ nameButton={"Apagar"}/>,
+        <ButtonTable key={taskModel.getId() + 1} /* onClick={this.handleClickButtonConcluir.bind(this, taskModel)} */ nameButton={"Concluir"}/>,
+        <ButtonTable key={taskModel.getId() + 2} /* onClick={this.handleClickButtonEditar.bind(this, taskModel)} */ nameButton={"Editar"}/>
     ];
 
     return buttons;
@@ -68,11 +67,15 @@ const getDataDB = () =>{
 
     return data
 }
+
+let dataDB = getDataDB();
+
 const Container = (props) => {
-    props.dataTable(getDataDB())
+    //props.dataTable(data)
     console.log(props)
-    //let data  = createMultipleRowsTable(props.tasks)
-    
+    let data  = createMultipleRowsTable(dataDB)
+    props.dataTable(dataDB)
+    console.log(props)
     return(
     <div className="container">
         <AddTask>
@@ -80,10 +83,10 @@ const Container = (props) => {
         <Table
             key={Math.random()}
             cells={cells}
-            data={[]}
+            data={data}
         >
         </Table>
     </div>
 )}
 
-export default connect( state => ({tasks : state.tasks}), {dataTable})(Container);
+export default connect( null, {dataTable})(Container);

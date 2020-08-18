@@ -8,13 +8,11 @@ export default function (state = initialState, action) {
         case ADD_TASK: {
             console.log(state)
             const task  = action.payload.task
-            console.log(task)
             return {...state, tasks: [...state.tasks, task]}
             
         }
         case DATA_TABLE: {
             const dataTable = action.payload.dataTable
-            console.log(dataTable)
             return {tasks: dataTable}
 
         }
