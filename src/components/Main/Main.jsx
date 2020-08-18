@@ -20,12 +20,12 @@ class Main extends Component{
         return(
             <main>
                 <h1>Lista de Tarefa</h1>
-                <Container 
+                <Container /* 
                     data={this.state.data}
                     addTask={this.state.addTask}
                     clickDelete= {this.state.clickDelete}
                     clickFinish= {this.state.clickFinish}
-                    clickEdit= {this.state.clickEdit}
+                    clickEdit= {this.state.clickEdit} */
                 />
             </main>
           

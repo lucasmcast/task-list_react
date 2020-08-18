@@ -60,13 +60,7 @@ class TaskListView {
             ReactDOM.render(
                 <Provider store={store}>
                     <NavBar menuItems={routes} />
-                    <Main 
-                        data={tasks}
-                        addTask={addTask}
-                        clickDelete={clickDelete}
-                        clickFinish={clickFinish}
-                        clickEdit= {clickEdit}
-                    />
+                    <Main />
                 </Provider>,
                 document.getElementById('root')
             );

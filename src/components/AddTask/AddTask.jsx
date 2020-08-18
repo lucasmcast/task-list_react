@@ -5,16 +5,18 @@ import './style.css'
 import TaskModel from '../../models/TaskModel';
 import { addTask } from '../../redux/actions'
 import { connect } from 'react-redux'
+import TableController from '../../controllers/tableController';
 
 /**
  * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
  * @since 1.0.0
  */
 
-class AddTask extends Component{
+class AddTask extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
+        this.controller = new TableController()
         this.state = {
             description: ''
         }
@@ -24,29 +26,30 @@ class AddTask extends Component{
      * Change this.task
      * @param {Event} event 
      */
-    handleChangeTask(event){
+    handleChangeTask(event) {
         const valueInput = event.target.value;
-        this.setState({description: valueInput})
+        this.setState({ description: valueInput })
     }
 
     /**
      * calls the add task function if the add button is clicked
      * @see models.TaskList.addTask
      */
-    handleClickButtonAddTask(event){
-        this.props.addTask(this.state.description);
-        this.setState({description: ''})
-        /* if (this.state.task !== ''){
+    handleClickButtonAddTask(event) {
+        if (this.state.description !== '') {
             let taskModel = new TaskModel();
-            taskModel.setDescricao(this.state.task);
+            taskModel.setDescricao(this.state.description);
             taskModel.setSituacao("Pendente");
-            this.state.addTask(taskModel);
-            const valueInput = '';
-            this.setState({task: valueInput});
-        }else{
+            this.controller.save(taskModel).then((resp) => {
+                taskModel.setId(resp)
+                this.props.addTask(taskModel);
+                this.setState({ description: '' })
+            });
+
+        } else {
             alert("Digite uma tarefa")
-        } */
-        
+        }
+
     }
 
     /**
@@ -54,24 +57,26 @@ class AddTask extends Component{
      * @param {Event} event - Event 
      * @see models.TaskListView.addTask()
      */
-    handleOnKeyUpAddTask(event){
-        if(event.key === 'Enter'){
-            if(this.state.description !== ''){
+    handleOnKeyUpAddTask(event) {
+        if (event.key === 'Enter') {
+            if (this.state.description !== '') {
                 let taskModel = new TaskModel();
                 taskModel.setDescricao(this.state.description);
                 taskModel.setSituacao("Pendente");
-                this.state.addTask(taskModel);
-                const valueInput = '';
-                this.setState({task: valueInput});
-            }else{
+                this.controller.save(taskModel).then((resp) => {
+                    taskModel.setId(resp)
+                    this.props.addTask(taskModel);
+                    this.setState({ description: '' })
+                });
+            } else {
                 alert("Digite uma tarefa")
             }
-            
+
         }
     }
 
-    render(){
-        return(
+    render() {
+        return (
             <div className="Add-Task">
                 <InputAddTask
                     onChange={this.handleChangeTask.bind(this)}
@@ -81,11 +86,11 @@ class AddTask extends Component{
                 <ButtonAddTask onClick={this.handleClickButtonAddTask.bind(this)}></ButtonAddTask>
             </div>
         )
-        
+
     }
 }
 
 export default connect(
     null,
-    {addTask}
+    { addTask }
 )(AddTask);

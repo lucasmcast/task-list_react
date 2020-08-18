@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './style.css'
 import Table from '../Table';
 import ButtonTable from './ButtonTable';
 import AddTask from '../AddTask';
-import EditDesc from './EditDesc';
 import { connect } from 'react-redux';
 import { dataTable } from '../../redux/actions';
 import { getAllTasks } from '../../redux/selectors'
+import TableController from '../../controllers/tableController';
+import TaskModel from '../../models/TaskModel';
 
 /**
  * 
@@ -15,210 +16,74 @@ import { getAllTasks } from '../../redux/selectors'
  * @since 1.0.0
  * 
  */
-class Container extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            tasks: this.createMultipleRowsTable(),
-            addTask: this.props.addTask,
-            clickDelete: this.props.clickDelete,
-            clickFinish: this.props.clickFinish,
-            clickEdit: this.props.clickEdit
-        }
-        this.cells = ["ID", "Descrição", "Situação", "Ação"]
-    }
+var cells = ["ID", "Descrição", "Situação", "Ação"]
+var controller = new TableController();
 
-    /**
-     * 
-     * @param {TaskModel} taskModel 
-     */
-    handleClickButtonApagar(taskModel){
-
-        let idTask = taskModel.getId()
-        this.state.clickDelete(taskModel);
-        let index = this.findIndexArray(idTask)
-        this.state.tasks.splice(index,1)
-        this.setState({data: this.state.tasks});
-    }
-
-    /**
-     * 
-     * @param {TaskModel} taskModel 
-     * 
-     * TODO - Corrigir busca do banco de dados para tarefa concluida;
-     */
-    handleClickButtonConcluir(taskModel){
-        let arrayData = this.state.tasks
-        taskModel.setSituacao("Concluído")
-        this.state.clickFinish(taskModel);
-        
-        let idTask = taskModel.getId()
-        let index = this.findIndexArray(idTask);
-        let row = {
-            row: [
-                taskModel.getId(), 
-                taskModel.getDescricao(),
-                taskModel.getSituacao(),
-                <ButtonTable 
-                    key={taskModel.getId()} 
-                    onClick={this.handleClickButtonApagar.bind(this, taskModel)} 
-                    nameButton={"Apagar"}/>
-            ]
-        }
-        arrayData[index] = row
-        this.setState({data: arrayData})
-    }
-
-     /**
-     * 
-     * 
-     * @param {TaskModel} taskModel 
-     */
-    handleClickButtonEditar(taskModel){
-        //this.state.clickEdit(task);
-        let arrayData = this.state.tasks
-        let idTask = taskModel.getId()
-        let index = this.findIndexArray(idTask);
-
-        let editDesc = <EditDesc 
-            value={taskModel}
-            onClick={this.handleSaveEditDescription.bind(this)}
-            index={index}/>
-        let row = {row: [
-            taskModel.getId(),
-            editDesc, 
-            taskModel.getSituacao(),
-            []
-            //this.createButtonsActions(task)
-        ]}
-
-        
-        arrayData[index] = row
-        this.setState({data: arrayData})
-    }
-
-    /**
-     * search the index in the array using the task id;
-     * 
-     * @param {Integer} idTask - Id TaskModel 
-     * 
-     * @returns Integer - Index of table array
-     */
-    findIndexArray(idTask){
-        let index;
-    
-        const ID_TASK_OF_TABLE = 0;
-
-        for(let i = 0; i < this.state.tasks.length; i++){
-            let idTable = this.state.tasks[i].row[ID_TASK_OF_TABLE]
-            if(idTask === idTable){
-                index = i
-            }
-        }
-        
-        return index;
-    }
-
-   
-    /**
-     * Creates buttons to be rendered in the action column
-     * 
-     * @param {TaskModel} taskModel
-     * 
-     * @returns Array of Buttons 
-     */
-    createButtonsActions(taskModel){
-        let buttons = [
-            <ButtonTable key={taskModel.getId()} onClick={this.handleClickButtonApagar.bind(this, taskModel)} nameButton={"Apagar"}/>,
-            <ButtonTable key={taskModel.getId() + 1} onClick={this.handleClickButtonConcluir.bind(this, taskModel)} nameButton={"Concluir"}/>,
-            <ButtonTable key={taskModel.getId() + 2} onClick={this.handleClickButtonEditar.bind(this, taskModel)} nameButton={"Editar"}/>
-        ];
-
-        return buttons;
-    }
-
-    /**
-     * Creates the table with the data obtained from the database
-     * 
-     * @returns Array for render table. data = [{row: []}]
-     */
-    createMultipleRowsTable(){
-        let data = []
-        this.props.data.forEach(task => {
-            const row = this.createRowTable(task);
-            data.push(row)      
-        });
-        return data
-    }
-
-    /**
-     * Create a table row according to the data that the table accepts
-     * 
-     * @param {TaskModel} taskModel
-     * 
-     * @returns Object - {row: []}
-     */
-    createRowTable(taskModel){
-        taskModel.setBotoes(this.createButtonsActions(taskModel));
-        const row = {
-            row: [
-                taskModel.getId(),
-                taskModel.getDescricao(),
-                taskModel.getSituacao(),
-                taskModel.getBotoes()
-            ]
-        };
-        return row;
-
-    }
-
-    /**
-     * Add the task to the database, and render the table with the new task
-     * 
-     * @param {TaskModel} taskModel 
-     */
-    async addTask(taskModel){
-        let response = await this.state.addTask(taskModel);
-        taskModel.setId(response);
-        const row = this.createRowTable(taskModel);
-        const newData = [...this.state.tasks, row]
-        let newState = {data: newData}
-        this.setState(newState);
-    }
-
-    /**
-     * Saves the edited task. 
-     * This function depends on the click of the edit button,
-     * that enables an input and a button in the description field.
-     * 
-     * @param {TaskModel} taskModel 
-     * @param {Integer} index - index of array table 
-     */
-    handleSaveEditDescription(taskModel, index){
-        let arrayData = this.state.tasks
-        let row = this.createRowTable(taskModel);
-        arrayData[index] = row
-        this.setState({data: arrayData})
-        this.state.clickEdit(taskModel);
-    }
-   
-    render(){
-        dataTable(this.props.data)
-        return(
-            <div className="container">
-                <AddTask
-                    addTask={this.addTask.bind(this)}
-                >
-                </AddTask>
-               <Table
-                    key={Math.random()} 
-                    cells={this.cells}
-                    data={this.state.tasks}
-                >
-               </Table>
-            </div>
-        );
-    }
+const createMultipleRowsTable = (tasks) =>{
+    let data = []
+    tasks.forEach(task => {
+        const row = createRowTable(task);
+        data.push(row)      
+    });
+    return data
 }
 
-export default connect(state => ({tasks: getAllTasks(state)}))(Container)
+function createRowTable(taskModel){
+    console.log(taskModel)
+    taskModel.task.setBotoes(createButtonsActions(taskModel))
+    const row = {
+        row: [
+            taskModel.task.getId(),
+            taskModel.task.getDescricao(),
+            taskModel.task.getSituacao(),
+            taskModel.task.getBotoes()
+        ]
+    };
+    return row;
+}
+
+
+function createButtonsActions(taskModel){
+    let buttons = [
+        <ButtonTable key={taskModel.task.getId} /* onClick={this.handleClickButtonApagar.bind(this, taskModel)} */ nameButton={"Apagar"}/>,
+        <ButtonTable key={taskModel.task.getId + 1} /* onClick={this.handleClickButtonConcluir.bind(this, taskModel)} */ nameButton={"Concluir"}/>,
+        <ButtonTable key={taskModel.task.getId + 2} /* onClick={this.handleClickButtonEditar.bind(this, taskModel)} */ nameButton={"Editar"}/>
+    ];
+
+    return buttons;
+}
+const getDataDB = () =>{
+    
+    let data = [];
+
+    controller.getAll().then((resp) => {
+        resp.forEach((task) =>{
+            let taskModel = new TaskModel();
+            taskModel.setDescricao(task.descricao);
+            taskModel.setSituacao(task.situacao);
+            taskModel.setId(task.id)
+            data.push(taskModel)
+        })
+    });
+
+    return data
+}
+const Container = (props) => {
+    props.dataTable(getDataDB())
+    console.log(props)
+    //let data  = createMultipleRowsTable(props.tasks)
+    
+    return(
+    <div className="container">
+        <AddTask>
+        </AddTask>
+        <Table
+            key={Math.random()}
+            cells={cells}
+            data={[]}
+        >
+        </Table>
+    </div>
+)}
+
+export default connect( state => ({tasks : state.tasks}), {dataTable})(Container);
