@@ -40,7 +40,13 @@ function createRowTable(taskModel){
 
 
 function createButtonsActions(taskModel){
-    let buttons = [
+    let buttons;
+
+    if(taskModel.getBotoes() === "update"){
+        buttons = []
+        return buttons
+    }
+    buttons = [
         <ButtonTable key={taskModel.getId()}  variant="delete" nameButton={"Apagar"} task={taskModel}/>,
         <ButtonTable key={taskModel.getId() + 1} variant="finish" nameButton={"Concluir"} task={taskModel}/>,
         <ButtonTable key={taskModel.getId() + 2} variant="update" nameButton={"Editar"} task={taskModel}/>
@@ -51,7 +57,7 @@ function createButtonsActions(taskModel){
 
 
 const Container = (props) => {
-
+    console.log(props)
     let rowsTable = createMultipleRowsTable(props.tasks)
     
     return(
@@ -69,7 +75,7 @@ const Container = (props) => {
 
 const mapStateToProps = (state)=>{
     return(
-        {tasks: state.tasks}
+        {tasks: state.rootTasks.tasks}
     )
 }
 export default connect(mapStateToProps)(Container);

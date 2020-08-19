@@ -9,11 +9,12 @@ class EditDesc extends Component{
     constructor(props){
         super(props)
         this.state = {
-            descricao: this.props.value.getDescricao(),
+            descricao: this.props.value,
             onClick: this.props.onClick,
             task: this.props.value,
             index: this.props.index
         }
+        console.log(this.props)
     }
     
     handleOnChange(event){
