@@ -1,36 +1,43 @@
 import React, { Component } from 'react';
 import Container from '../Container'
+import { addAllTable } from '../../redux/actions';
+import TaskModel from '../../models/TaskModel';
+import TableController from '../../controllers/tableController';
+import { connect } from 'react-redux';
 import './style.css'
 
+var controller = new TableController();
 
-class Main extends Component{
+const getDataDB = () =>{
+    
+    let data = [];
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            data: this.props.data,
-            addTask: this.props.addTask,
-            clickDelete: this.props.clickDelete,
-            clickFinish: this.props.clickFinish,
-            clickEdit: this.props.clickEdit
-        }
-    }
+    controller.getAll().then((resp) => {
+        resp.forEach((task) =>{
+            let taskModel = new TaskModel();
+            taskModel.setDescricao(task.descricao);
+            taskModel.setSituacao(task.situacao);
+            taskModel.setId(task.id)
+            data.push(taskModel)
+        })
+    });
 
-    render() {
+    return data
+}
+
+let dataDB = getDataDB();
+
+function Main(props) {
+        
+        props.addAllTable(dataDB)
         return(
             <main>
                 <h1>Lista de Tarefa</h1>
-                <Container /* 
-                    data={this.state.data}
-                    addTask={this.state.addTask}
-                    clickDelete= {this.state.clickDelete}
-                    clickFinish= {this.state.clickFinish}
-                    clickEdit= {this.state.clickEdit} */
-                />
+                <Container/>
             </main>
           
         )
-    }
+  
 }
 
-export default Main;
+export default connect(null, {addAllTable})(Main);

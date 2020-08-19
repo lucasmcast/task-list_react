@@ -4,9 +4,6 @@ import Table from '../Table';
 import ButtonTable from './ButtonTable';
 import AddTask from '../AddTask';
 import { connect } from 'react-redux';
-import { dataTable } from '../../redux/actions';
-import { getAllTasks } from '../../redux/selectors'
-import TableController from '../../controllers/tableController';
 import TaskModel from '../../models/TaskModel';
 
 /**
@@ -17,7 +14,6 @@ import TaskModel from '../../models/TaskModel';
  * 
  */
 var cells = ["ID", "Descrição", "Situação", "Ação"]
-var controller = new TableController();
 
 const createMultipleRowsTable = (tasks) =>{
     let data = []
@@ -42,40 +38,22 @@ function createRowTable(taskModel){
 }
 
 
+
 function createButtonsActions(taskModel){
     let buttons = [
-        <ButtonTable key={taskModel.getId()} /* onClick={this.handleClickButtonApagar.bind(this, taskModel)} */ nameButton={"Apagar"}/>,
-        <ButtonTable key={taskModel.getId() + 1} /* onClick={this.handleClickButtonConcluir.bind(this, taskModel)} */ nameButton={"Concluir"}/>,
-        <ButtonTable key={taskModel.getId() + 2} /* onClick={this.handleClickButtonEditar.bind(this, taskModel)} */ nameButton={"Editar"}/>
+        <ButtonTable key={taskModel.getId()}  variant="delete" nameButton={"Apagar"} task={taskModel}/>,
+        <ButtonTable key={taskModel.getId() + 1} variant="finish" nameButton={"Concluir"} task={taskModel}/>,
+        <ButtonTable key={taskModel.getId() + 2} variant="update" nameButton={"Editar"} task={taskModel}/>
     ];
 
     return buttons;
 }
-const getDataDB = () =>{
-    
-    let data = [];
 
-    controller.getAll().then((resp) => {
-        resp.forEach((task) =>{
-            let taskModel = new TaskModel();
-            taskModel.setDescricao(task.descricao);
-            taskModel.setSituacao(task.situacao);
-            taskModel.setId(task.id)
-            data.push(taskModel)
-        })
-    });
-
-    return data
-}
-
-let dataDB = getDataDB();
 
 const Container = (props) => {
-    //props.dataTable(data)
-    console.log(props)
-    let data  = createMultipleRowsTable(dataDB)
-    props.dataTable(dataDB)
-    console.log(props)
+
+    let rowsTable = createMultipleRowsTable(props.tasks)
+    
     return(
     <div className="container">
         <AddTask>
@@ -83,10 +61,15 @@ const Container = (props) => {
         <Table
             key={Math.random()}
             cells={cells}
-            data={data}
+            data={rowsTable}
         >
         </Table>
     </div>
 )}
 
-export default connect( null, {dataTable})(Container);
+const mapStateToProps = (state)=>{
+    return(
+        {tasks: state.tasks}
+    )
+}
+export default connect(mapStateToProps)(Container);

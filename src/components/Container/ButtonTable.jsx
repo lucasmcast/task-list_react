@@ -1,24 +1,42 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux'
 
-class ButtonTable extends Component {
-
-    constructor(props) {
-        super(props)
-        this.state = {
-            name: this.props.nameButton,
-            onClick: this.props.onClick
-        }
-    }
-    render() {
-        return (
-            <button 
-                className={`btn-${this.state.name}`}
-                onClick={this.state.onClick}
-            >
-            {this.state.name}
-            </button>
-        )
-    }
+const handleClickButtonDelete = param => event => {
+    console.log("Delete", param)
 }
 
-export default ButtonTable;
+const handleClickButtonFinish = param => event => {
+    console.log("Finish", param)
+}
+
+const handleClickButtonUpdate = param => event => {
+    console.log("Update", param)
+}
+function ButtonTable(props) {
+    let onClick;
+    
+    let taskModel = props.task
+    if(props.variant === "delete"){
+        onClick = handleClickButtonDelete
+    }else if(props.variant === "finish"){
+        onClick = handleClickButtonFinish
+    }else if(props.variant === "update"){
+        onClick = handleClickButtonUpdate
+    }
+
+    return (
+        <button
+            className={`btn-${props.nameButton}`}
+            onClick={onClick(taskModel)}
+        >
+            {props.nameButton}
+        </button>
+    )
+
+}
+const mapStateToProps = (state) =>{
+    return(
+        {tasks: state.tasks}
+    )
+}
+export default connect(mapStateToProps)(ButtonTable);

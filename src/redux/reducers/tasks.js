@@ -8,12 +8,12 @@ export default function (state = initialState, action) {
         case ADD_TASK: {
             console.log(state)
             const task  = action.payload.task
-            return {...state, tasks: [...state.tasks, task]}
+            return [...state, task]
             
         }
         case DATA_TABLE: {
-            const dataTable = action.payload.dataTable
-            return {tasks: dataTable}
+            const tasksTable = action.payload.tasksTable
+            return state.tasks = tasksTable
 
         }
         default:

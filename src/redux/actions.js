@@ -7,10 +7,11 @@ export const addTask = task => ({
      }
 });
 
-export const dataTable = (dataTable) => ( {
+export const addAllTable = (tasksTable) => ( {
+
         type: DATA_TABLE,
         payload: {
-            dataTable
+            tasksTable
         }
     }
 )

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './style.css'
 import ColumnTable from './ColumnTable';
 import RowTable from './RowTable';
+import connect from 'react-redux'
 
 /**Component Table. The table component receives as properties
  * the columns to be created receiving an array and 
@@ -15,49 +16,42 @@ import RowTable from './RowTable';
  * @author Lucas Martins de Castro <lucas.martins.c03@gmail.com>
  * @since 1.0.0
  */
-class Table extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            cells: this.props.cells,
-            rows: this.props.data
-        }
-    }
-    render() {
-        return (
-            <table className="customers-Table">
-                <thead>
-                    <tr>
-                        {
-                            this.state.cells.map((coll) => {
-                                return (
-                                    <ColumnTable
-                                        key={coll}
-                                        label={coll}>
-                                    </ColumnTable>
-                                )
-                            })
-                        }
-                    </tr>
-                </thead>
-                <tbody>
+function Table(props) {
+    return (
+        <table className="customers-Table">
+            <thead>
+                <tr>
                     {
-                        this.state.rows.map((row, index) => {
+                        props.cells.map((coll) => {
                             return (
-                                <RowTable
-                                    key={index}
-                                    id={index}
-                                    cells={this.state.cells}
-                                    row={row.row}
-                                >
-                                </RowTable>
+                                <ColumnTable
+                                    key={coll}
+                                    label={coll}>
+                                </ColumnTable>
                             )
                         })
                     }
-                </tbody>
-            </table>
-        )
-    }
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    props.data.map((row, index) => {
+                        return (
+                            <RowTable
+                                key={index}
+                                id={index}
+                                cells={props.cells}
+                                row={row.row}
+                            >
+                            </RowTable>
+                        )
+                    })
+                }
+            </tbody>
+        </table>
+    )
 }
+
+
 
 export default Table;
